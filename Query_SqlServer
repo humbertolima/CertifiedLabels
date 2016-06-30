@@ -1,0 +1,183 @@
+create database Certified_Label
+
+USE [Certified_Label]
+GO
+
+/****** Object:  Table [dbo].[HttpRequest]    Script Date: 6/29/2016 11:18:09 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[HttpRequest](
+	[RequestID] [int] IDENTITY(1,1) NOT NULL,
+	[UserID] [int] NOT NULL,
+	[SenderID] [int] NOT NULL,
+	[UserEmail] [char](50) NOT NULL,
+	[DepartmentName] [varchar](40) NOT NULL,
+	[AplicationName] [varchar](20) NOT NULL,
+	[Sector] [varchar](70) NOT NULL,
+	[SenderAddress] [varchar](70) NOT NULL,
+	[SenderAddress2] [varchar](70) NOT NULL,
+	[SenderCity] [varchar](40) NOT NULL,
+	[SenderState] [varchar](20) NOT NULL,
+	[SenderZip] [char](10) NOT NULL,
+	[SenderPhone] [varchar](10) NOT NULL,
+	[CaseNumber] [char](65) NOT NULL,
+	[SupervisorName] [varchar](20) NOT NULL,
+	[Description] [varchar](200) NULL,
+	[Subject] [varchar](20) NOT NULL,
+	[Date] [varchar](10) NOT NULL,
+	[Contact] [char](70) NOT NULL,
+	[Company] [char](70) NOT NULL,
+	[Address1] [char](70) NOT NULL,
+	[Address2] [char](70) NOT NULL,
+	[City] [char](40) NOT NULL,
+	[State] [char](20) NOT NULL,
+	[Zip] [char](10) NOT NULL,
+	[Name] [varchar](50) NULL,
+	[Url] [varchar](100) NULL,
+ CONSTRAINT [PK_HttpRequest] PRIMARY KEY CLUSTERED 
+(
+	[RequestID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+
+USE [Certified_Label]
+GO
+
+/****** Object:  Table [dbo].[Department]    Script Date: 6/29/2016 11:20:25 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[Department](
+	[DepartmentName] [varchar](40) NOT NULL,
+	[UserID] [int] NOT NULL,
+	[SenderID] [int] NOT NULL,
+	[UserEmail] [char](50) NOT NULL,
+	[Sector] [varchar](70) NOT NULL,
+	[Address] [varchar](70) NOT NULL,
+	[Address2] [varchar](70) NOT NULL,
+	[City] [varchar](40) NOT NULL,
+	[State] [varchar](20) NOT NULL,
+	[Zip] [char](10) NOT NULL,
+	[Phone] [varchar](10) NOT NULL,
+ CONSTRAINT [PK_Department] PRIMARY KEY CLUSTERED 
+(
+	[DepartmentName] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+
+USE [Certified_Label]
+GO
+
+/****** Object:  Table [dbo].[Case]    Script Date: 6/29/2016 11:20:50 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[Case](
+	[CaseNumber] [char](65) NOT NULL,
+	[SupervisorName] [varchar](20) NOT NULL,
+	[Description] [varchar](200) NULL,
+	[DepartmentName] [varchar](40) NOT NULL,
+ CONSTRAINT [PK_Case] PRIMARY KEY CLUSTERED 
+(
+	[CaseNumber] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_Department] FOREIGN KEY([DepartmentName])
+REFERENCES [dbo].[Department] ([DepartmentName])
+GO
+
+ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_Department]
+GO
+
+
+USE [Certified_Label]
+GO
+
+/****** Object:  Table [dbo].[Letter]    Script Date: 6/29/2016 11:21:08 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[Letter](
+	[LetterID] [int] IDENTITY(1,1) NOT NULL,
+	[DepartmentName] [varchar](40) NOT NULL,
+	[CaseNumber] [char](65) NOT NULL,
+	[Subject] [varchar](20) NOT NULL,
+	[Date] [varchar](10) NOT NULL,
+	[Contact] [char](70) NOT NULL,
+	[Company] [char](70) NOT NULL,
+	[Address1] [char](70) NOT NULL,
+	[Address2] [char](70) NOT NULL,
+	[City] [char](40) NOT NULL,
+	[State] [char](20) NOT NULL,
+	[Zip] [char](10) NOT NULL,
+	[Name] [varchar](50) NULL,
+	[Url] [varchar](100) NULL,
+ CONSTRAINT [PK_Letter] PRIMARY KEY CLUSTERED 
+(
+	[LetterID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+ALTER TABLE [dbo].[Letter]  WITH CHECK ADD  CONSTRAINT [FK_Letter_Case] FOREIGN KEY([CaseNumber])
+REFERENCES [dbo].[Case] ([CaseNumber])
+GO
+
+ALTER TABLE [dbo].[Letter] CHECK CONSTRAINT [FK_Letter_Case]
+GO
+
+ALTER TABLE [dbo].[Letter]  WITH CHECK ADD  CONSTRAINT [FK_Letter_Department] FOREIGN KEY([DepartmentName])
+REFERENCES [dbo].[Department] ([DepartmentName])
+GO
+
+ALTER TABLE [dbo].[Letter] CHECK CONSTRAINT [FK_Letter_Department]
+GO
+
+
